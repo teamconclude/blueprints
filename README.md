@@ -144,11 +144,9 @@ Conclude commands to change these settings.  You might see something like this:
 {
   "name": "incident",
   "type": "global",
-  ...
   "owner": "@patricia:U12Q150H2",
   "members": "#ict-incidents:CKRJ2EF59",
   "notify": "#ict-incidents:CKRJ2EF59",
-  ...
 ````
 
 The format is @slackuser:USER_ID or @slackusergroup:USERGROUP_ID, or #channel:CHANNEL_ID.
@@ -295,7 +293,7 @@ These settings modify the text of the OK button in the dialogs just described:
 
 You may also customize the notification that is sent to the blueprint members:
 
-- **create_intro**: The default text ":wave: New activity" or ":wave: New <label>"
+- **create_intro**: The default text ":wave: New activity" or ":wave: New \<label\>"
 if the blueprint has a label setting.
 - **conclude_intro**: The default text is ":white_check_mark: Concluded activity"
-or ":white_check_mark: Concluded <label>".
+or ":white_check_mark: Concluded \<label\>".
