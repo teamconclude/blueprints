@@ -1,20 +1,22 @@
-# Conclude Blueprints
+# Blueprints for Slack
 
-Blueprints are essential to <a href="https://concludeapp.com"> Conclude</a>.
-They let teams implement workflows and processes directly in Slack.
+<a href="https://concludeapp.com"> Conclude's</a> blueprints let teams implement
+workflows and processes directly in Slack. Here are some workflows that Conclude
+supports out of the box:
 
-Here are some examples workflows that Conclude supports out of the box:
 - Responding to helpdesk inquires
 - Managing IT incidents
 - Processing recruitment candidates
 
-A blueprint specifies the information content in a certain workflow.
-The goal of this document is to teach you how to create your own custom blueprints.
+A blueprint specifies a workflow's information content, and how it is presented and
+shared. The goal of this document is to teach you how to create your own custom blueprints.
 
 Blueprints are expressed in JSON. You don't need to be a hard core developer to make
-your own blueprints, as long as you start out with some existing blueprints and try
-and err in your own Slack channels before rolling out new workflows to the entire
-enterprise.
+your own blueprints. Start out with existing blueprints and experiment in your own
+Slack channels to understand how they work, then you'll soon be ready to set them
+in production. We recommend using an editor that understands JSON and warns about
+syntax errors, for example <a href="https://visualstudio.microsoft.com">
+Visual Studio Code</a>.
 
 ## Key Concepts
 
@@ -82,17 +84,16 @@ must be one of the following:
 - **global**: A custom blueprint with global scope.
 
 The main difference between the types is scope; i.e. who can use the blueprint, and
-how is it invoked.
+how it is invoked.
 
 To use a *basic* or *standard* blueprint, the user must enter the channel where the
 blueprint is installed and type `/c new` to create an activity based on the blueprint.
-The blueprint is *invoked locally* from inside the channel, and the user will of course
-need to be a member of the channel to use the blueprint.
+The blueprint is *invoked locally* from inside the channel. This can only be done by
+channel members.
 
-Blueprints of *custom* and *global* type can be invoked with the `/c <blueprint>`
-command from anywhere in Slack. The user does not need to enter into the channel
-where the blueprint was installed (for example in `#ict-helpdesk`) but can run the
-`/c helpdesk` from anywhere.
+*Custom* and *global* type can be invoked with the `/c <blueprint>` command from
+anywhere in Slack. The user does not need to enter the channel where the blueprint is
+installed (for example in `#helpdesk`) but can run the `/c helpdesk` from anywhere.
 
 ### Custom Blueprints = Restricted Scope
 
@@ -101,60 +102,66 @@ blueprint was installed, while *global* has no such limitations and can even be 
 by multi-channel guests, such as external contractors.
 
 You would normally use *custom* blueprints to implement workflows for functional or
-geographical units of the organization, and *global* blueprints for company wide use.
+geographical units of the organization, and *global* blueprints for company-wide use.
 
-### Global Blueprints: Company Wide Scope
+### Global Blueprints = Company-Wide Scope
 
-Global blueprints are useful, because they let anyone in the workspace use a blueprint
-to file an incident report, submit a helpdesk ticket etc., however, they are not
-permitted to see the "inside" of the incident or helpdesk activity unless you give
-them an explicit invitation.
+Global blueprints are useful, because they allow everyone in the workspace to create a
+new activity with these blueprints. However, they are not permitted to see the
+"inside" of the activity unless they get an explicit invitation.
 
 You can think of global blueprints as a way to build a wall of separation between the
 people on the outside who file a report, create a ticket etc. and the internal team on
-the inside. 
+the inside that deals with the issue.
 
-In order to make global blueprints work, you will need to specify who is on the
-inside team, and who will be notified about the new activity.
+To make global blueprints work, you need to specify who is on the inside team, and who
+should be notified about a new activity.
 
 This is exactly what the `/c blueprint install` command does.
 
-## Default Membership and Notifications
+## Internal Team and Notifications
 
-A blueprint can specify the default owner and members (the internal team), and how to notify
+A blueprint can specify the default owner and members (the internal team), and whom to notify
 about the creation and conclusion of activities. The default behavior (when using the basic
 blueprint) is:
 - The user who created the activity with `/c new` becomes the owner.
 - No members are invited by default.
 - No notifications are sent out, except that the owner sees a new activity channel.
 
-It is then up to the owner to invite members to the activity by inviting them through Slack.  The
-`/c invite` command is a convenient way to invite several users or user groups to an activity.
+The owner can invite members to the activity through Slack, or by using the
+`/c invite` command, a convenient way to invite several users or user groups to an activity.
 
 When someone installs a blueprint with the `/c blueprint install` command, Conclude will
-use these default settings (except when setting the basic blueprint):
-- The type is set to *global* so the blueprint becomes available to anyone in the team.
-- The person who installed the blueprint becomes the default owner of all activities created with this blueprint.
-- The channel members of the blueprint's install channel will automatically be invited to all activities. 
-- Notifications will be posted in the install channel when an activity is created and concluded. 
+use these default settings (except when installing the basic blueprint):
+- The type is set to *global* so the blueprint becomes available to anyone in the workspace.
+- The person who installed the blueprint becomes the default owner of all activities
+created with this blueprint.
+- All members of the channel where the blueprint is installed will automatically be
+invited to all activities. 
+- Notifications will be posted in the parent channel when an activity is created and concluded. 
 
-You may modify these settings using `/c blueprint edit` to update the JSON format directly, or use
-Conclude commands to change these settings.  You might see something like this:
+For example, @patricia install the *incident* blueprint in the #ict-incidents channel:
+- @patricia will become the default owner.
+- All members of #ict-incidents will be invited to #_ict-incidents-1, ..-2 etc.
+- Notifications will be posted in #ict-incidents.
+
+You may modify these settings using `/c blueprint edit` to edit the JSON code, or
+ by using some Conclude commands described below. The JSON code may look like this:
 ````json
 {
   "name": "incident",
   "type": "global",
   "owner": "@patricia:U12Q150H2",
   "members": "#ict-incidents:CKRJ2EF59",
-  "notify": "#ict-incidents:CKRJ2EF59",
+  "notify": "#ict-incidents:CKRJ2EF59, @ict-team:S8RJ4GA21",
 ````
 
 The format is @slackuser:USER_ID or @slackusergroup:USERGROUP_ID, or #channel:CHANNEL_ID.
-Conclude only uses the ID after the colon. The user- og channel name before the colon is just
+Conclude only uses the ID after the colon. The user- or channel name before the colon is just
 for readability purposes.
 
 We recommend that you never edit these settings directly in the JSON file but instead use
-the following commands to set them:
+these commands to set them:
 - `/c blueprint set owner @patricia`
 - `/c blueprint set members #ict-incidents` 
 - `/c blueprint set notify #incidents-log @ict-team` 
@@ -168,7 +175,7 @@ the activity. As noted above, if no owner has been set, the user who creates the
 will become the initial owner (and initiator).
 
 **TIP:** If you want the activity to be unassigned to begin with, create a Slack user called
-unassigned and make this the default owner.
+"Unassigned" and make this the default owner.
 
 You may change the owner later by using the `/c owner` command, or directly from the
 settings menu in the Conclude Inbox.
@@ -182,7 +189,8 @@ You may invite more members later, by using the `/c invite` command, or through 
 The **notify** setting takes the same parameters as the members setting. It tells Conclude
 whom to notify when an activity has been created, concluded or re-opened.
 
-**TIP**: Some teams prefer to send all notifications to a place: `/c blueprint set notify #conclude-logs`.   
+**TIP**: Some teams prefer to send all notifications to a place:
+`/c blueprint set notify #conclude-logs`.   
 
 The only way to change the notification setting is to change it in the blueprint.
 
@@ -190,8 +198,8 @@ Conclude can also show or clear settings:
 - `/c blueprint show members`
 - `/c blueprint clear notify`
 
-Don't remember the blueprint command later? No problem. Just type `/c help blueprint`.
-to
+Don't remember the blueprint command later? No problem. Just type `/c help blueprint`
+to get a help text.
 
 ## Attributes
 
@@ -200,8 +208,8 @@ supported by Slack.
 
 ### Core Properties
 
-An attribute has a mandatory *name*, *label* and *type*, and several other properties
-described later:
+An attribute has a mandatory *name*, *label* and *type*, plus a few other properties
+described further down:
 - **name**: The attribute internal name.
 - **type**: The attribute type, explained below.
 - **label**: A visible label displayed before the attribute.
@@ -213,13 +221,37 @@ The attribute types can be one of the following:
 - **user**: A special select dropdown to select a Slack user.
 - **link**: A special single line text to store a URL.
 
+A *select* attribute requires a list of options, like this:
+````json
+{
+  "name": "status",
+  "type": "select",
+  "label": "Dev Task status",
+  "default_value": "not_started",
+  "options": [
+    {
+      "name": "not_started",
+      "label": ":cloud: Not Started"
+    },
+    {
+      "name": "in_progress",
+      "label": ":running: In Progress"
+    },
+    {
+      "name": "completed",
+      "label": ":white_check_mark: Completed"
+    }
+  ]
+  }
+````
+
 ### Predefined Attributes
 
-There are several predefined attributes. They may be customized with a new label, but
+There are 5 predefined attributes. They may be customized with a new label, but
 their type must remain the same:
-- **title** (*string*): The main subject headline identifies the activity and is always required.
+- **title** (*string*): The main subject/headline - cannot be empty.
 - **body** (*text*): A general purpose text area (up to 3k characters).
-- **conclusion** (*text*): The conclusion should contain a closing summary of the activity.
+- **conclusion** (*text*): Should contain a closing summary of the activity.
 - **deadline** (*text*): Activity deadline (implicit attribute)
 - **severity** (*select*): Activity severity (implicit attribute).
 
@@ -228,25 +260,27 @@ They are also normally not displayed in the input dialog where a user creates a 
 
 ### More Attribute Properties
 
-In addition to the obligatory attributes *name*, *title* and *label* described above,
-there are a few other properties:
+There are a few other properties in addition to the obligatory *name*, *title* and
+*label* described above:
 
-- **mandatory** (boolean): Setting *mandatory* to *true* (not "true") means that the
+- **mandatory** (boolean): Setting *mandatory* to *true* means that the
 attribute should always have a non-empty value. This is the case for the *title* attribute.
 - **default_value**: The default value of an attribute.
 - **placeholder**: A text displayed inside the input field before the user starts typing.
 - **hint**: A contextual hint about the format etc. of the attribute.
 - **visible**: Controls where the attribute is displayed (default = "").
 
+### Attribute Visibility
+
 The **visible** setting can be:
-- empty: This is the default setting. The attribute will be shown in all dialogs.
+- "" / not set: Default setting. The attribute will be shown in all dialogs.
 - "create": The attribute will only be shown in the create dialog.
 - "edit": The attribute will only be shown in the conclude dialog.
 - "conclude": The attribute will only be shown in the conclude dialog.
 - "create,edit": Shown in the create and edit dialogs but not in the conclude dialog.
 
-Here's how to add an attribute that's visible internally but not to the person who
-creates the activity:
+Here's how to add an attribute that's visible to the internal team but not to 
+the person who creates the activity:
 ````json
 {
   "name": "notes",
