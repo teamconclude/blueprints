@@ -1,0 +1,72 @@
+{
+  "name": "incident",
+  "type": "standard",
+  "label": "Incident",
+  "description": "Report and manage incidents",
+  "attributes": [
+    {
+      "name": "title",
+      "type": "string",
+      "label": "Incident",
+      "placeholder": "Brief headline",
+      "mandatory": true
+    },
+    {
+      "name": "body",
+      "type": "text",
+      "label": "Incident details",
+      "placeholder": "More information here"
+    },
+    {
+      "name": "reportedBy",
+      "type": "user",
+      "label": "Reported by",
+      "placeholder": "Who reported the incident?"
+    },
+    {
+      "name": "conclusion",
+      "type": "text",
+      "label": "Resolution",
+      "placeholder": "What was the resolution?"
+    },
+    {
+      "name": "severity",
+      "type": "select",
+      "label": "Incident severity",
+      "options": [
+        {
+          "name": "none",
+          "label": "😌 None"
+        },
+        {
+          "name": "low",
+          "label": "⚠️ Low"
+        },
+        {
+          "name": "medium",
+          "label": "❗ Medium"
+        },
+        {
+          "name": "high",
+          "label": "‼️ High"
+        },
+        {
+          "name": "critical",
+          "label": "🔥 Critical"
+        }
+      ],
+      "default_value": "none",
+      "visible": "always"
+    },
+    {
+      "name": "notes",
+      "type": "text",
+      "label": "Internal notes",
+      "placeholder": "Internal notes about response and remediation",
+      "visible": "edit"
+    }
+  ],
+  "create_caption": "Report Incident",
+  "edit_caption": "Update Incident",
+  "conclude_caption": "Close Incident"
+}

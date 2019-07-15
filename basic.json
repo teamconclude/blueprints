@@ -1,0 +1,27 @@
+{
+  "name": "basic",
+  "type": "basic",
+  "description": "The default blueprint",
+  "attributes": [
+    {
+      "name": "title",
+      "type": "string",
+      "label": "Subject",
+      "placeholder": "Enter subject here",
+      "mandatory": true
+    },
+    {
+      "name": "body",
+      "type": "text",
+      "label": "Details",
+      "placeholder": "Enter detailed description here"
+    },
+    {
+      "name": "conclusion",
+      "type": "text",
+      "label": "Conclusion",
+      "placeholder": "Enter conclusion here"
+    }
+  ],
+  "disable_severity": true
+}

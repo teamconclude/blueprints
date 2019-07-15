@@ -1,0 +1,38 @@
+{
+  "name": "recruitment",
+  "type": "standard",
+  "label": "Recruitment",
+  "description": "Track job candidates",
+  "attributes": [
+    {
+      "name": "title",
+      "type": "string",
+      "label": "Position",
+      "placeholder": "Enter job position",
+      "mandatory": true
+    },
+    {
+      "name": "candidate",
+      "type": "string",
+      "label": "Candidate",
+      "placeholder": "Enter name of candidate",
+      "mandatory": true
+    },
+    {
+      "name": "body",
+      "type": "text",
+      "label": "Job description",
+      "placeholder": "Detailed job description"
+    },
+    {
+      "name": "conclusion",
+      "type": "text",
+      "label": "Hiring decision",
+      "placeholder": "What was the hiring decision?"
+    }
+  ],
+  "disable_severity": true,
+  "create_caption": "Job Candidate",
+  "edit_caption": "Update Candidate",
+  "conclude_caption": "Conclude Candidate"
+}

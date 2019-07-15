@@ -1,0 +1,63 @@
+{
+  "name": "helpdesk",
+  "type": "standard",
+  "label": "Helpdesk inquiry",
+  "description": "Company helpdesk",
+  "attributes": [
+    {
+      "name": "title",
+      "type": "string",
+      "label": "Subject",
+      "placeholder": "What is you inquiry about?",
+      "mandatory": true
+    },
+    {
+      "name": "body",
+      "type": "text",
+      "label": "Description",
+      "placeholder": "Please provide the details here"
+    },
+    {
+      "name": "submittedBy",
+      "type": "user",
+      "label": "Submitted by",
+      "placeholder": "Who is asking?"
+    },
+    {
+      "name": "conclusion",
+      "type": "text",
+      "label": "Solution",
+      "placeholder": "What was the solution (if any)?"
+    },
+    {
+      "name": "category",
+      "type": "select",
+      "label": "Category (internal use)",
+      "options": [
+        {
+          "name": "general",
+          "label": "General question"
+        },
+        {
+          "name": "software",
+          "label": "Software problem"
+        },
+        {
+          "name": "hardware",
+          "label": "Hardware problem"
+        },
+        {
+          "name": "network",
+          "label": "Network problem"
+        }
+      ],
+      "default_value": "general",
+      "visible": "edit"
+    }
+  ],
+  "disable_deadline": true,
+  "disable_severity": true,
+  "create_caption": "Ask the Helpdesk",
+  "edit_caption": "Update Ticket",
+  "conclude_caption": "Close Ticket"
+}
