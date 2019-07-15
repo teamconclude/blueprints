@@ -46,8 +46,8 @@ instance of a helpdesk blueprint.
 an activity is created. The purpose of the channel is to deal with an an activity
 (for example, a helpdesk ticket). The channel is archived when the activity is
 concluded (closed), but the information is still available in the Conclude Inbox.
-- A **parent channel** is the Slack channel that an activity originates from.
-This is the channel where the blueprint is installed.
+- A **parent channel** is the Slack channel where the blueprint is installed and
+an activity originates from.
 - The **initiator** is the user who creates the activity.
 - The **inside team** consists of the users who deal with the activity, consisting
 of an *owner* (who "owns" the activity) and other *members*.
@@ -60,7 +60,8 @@ Here's an example:
 
 ## The Basic Blueprint
 
-The *basic* (default) blueprint in Conclude consists of three attributes:
+If you don't install a blueprint in a channel, it will have the *basic* blueprint
+set by default. It consists of three attributes:
 - A mandatory *title* that contains the subject of a basic activity.
 - An optional *body* field that contains a detailed text.
 - An optional *conclusion* field with the conclusion text.
@@ -101,7 +102,7 @@ as a Slack channel; lower case letters, numbers, periods, and underscores. The t
 must be one of the following:
 - **basic**: The basic blueprint.
 - **standard**: A standard blueprint.
-- **custom**: A custom blueprint with semi-global scope.
+- **custom**: A custom blueprint with restricted scope.
 - **global**: A custom blueprint with global scope.
 
 The main difference between the types is scope; i.e. who can use the blueprint, and
@@ -131,12 +132,12 @@ A *custom* blueprint is limited to users who are members of the channel where th
 blueprint was installed, while *global* has no such limitations and can even be used
 by multi-channel guests, such as external contractors.
 
-You would normally use *custom* blueprints to implement workflows for functional or
+We recommend using *custom* blueprints to implement workflows for functional or
 geographical units of the organization, and *global* blueprints for company-wide use.
 
 ### Global Blueprints - for the Entire Workspace
 
-Global blueprints allow everyone in the workspace (except single channel members)
+Global blueprints allow everyone in the workspace (except single-channel members)
 to create a new activity. However, the initiator who creates the activity is
 not permitted to see the "inside" of the activity unless they get an explicit invitation.
 
@@ -165,8 +166,8 @@ The owner can invite members to the activity through Slack, or by using the
 
 #### Default Settings with `/c blueprint install`
 
-When someone installs a blueprint with install command, Conclude will
-use these default settings (except when installing the basic blueprint):
+When someone installs a blueprint with the install command, Conclude will
+use the following settings (except when installing the basic blueprint):
 - The type is set to *global* so the blueprint becomes available to anyone in the workspace.
 - The person who installed the blueprint becomes the default owner of all activities
 created with this blueprint.
@@ -181,8 +182,8 @@ For example, @patricia install the *incident* blueprint in the #incidents channe
 
 #### JSON Representation
 
-You may modify these settings using `/c blueprint edit` to edit the JSON code, or
- by using some Conclude commands described below. The JSON code may look like this:
+You can view and edit the JSON code using the `/c blueprint edit` command.
+ The code may look like something this:
 ````json
 {
   "name": "incident",
@@ -198,21 +199,21 @@ for readability purposes.
 
 #### Use the `/c blueprint set ...` Commands
 
-We recommend that you never edit these settings directly in the JSON file but instead use
-these commands to set them:
+We recommend that you never edit owner, members and notify directly in the JSON file but
+instead use these commands to set them:
 - `/c blueprint set owner @patricia`
 - `/c blueprint set members #incidents` 
-- `/c blueprint set notify #iict-ncidents` 
+- `/c blueprint set notify #incidents` 
 
-Conclude will look up the actual Slack IDs and insert them into the JSON.
+Conclude will look up the actual Slack IDs and insert them into the JSON so you don't have to.
 
 #### Owner Setting
 
 The **owner** must be a Slack team member that has permissions to create a new Slack channel.
-This user will become the owner of all activities creates with the blueprint. Conclude will
+This user becomes the owner of all activities creates with the blueprint. Conclude will
 keep track of the user who initiated the activity and display this information at the top of
-the activity. As noted above, if no owner has been set, the user who creates the activity
-will become the initial owner (and initiator).
+the activity. As noted above, if no owner has been set, the initiator who creates the activity
+will become the owner.
 
 **TIP:** If you want the activity to be unassigned to begin with, create a Slack user called
 "Unassigned" and make this the default owner.
@@ -267,8 +268,8 @@ An attribute has three mandatory properties and a number of optional properties.
 #### Optional Properties
 
 - **mandatory** (boolean): Setting *mandatory* to *true* means that the
-attribute should always have a non-empty value. This is the case for the *title* attribute.
-- **default_value**: The default value of an attribute.
+attribute is required to have a non-empty value. This is the case for the *title* attribute.
+- **default_value**: The default/initial value of an attribute.
 - **placeholder**: A text displayed inside the input field before the user starts typing.
 - **hint**: A contextual hint about the format etc. of the attribute.
 - **visible**: Controls where the attribute is displayed.
@@ -359,12 +360,12 @@ set Conclude will hide the severity settings from the user interface.
 
 You can change the dialog caption (title) with these settings:
 - **create_caption**: Sets the caption of the dialog where the user creates a new
-activity. The default caption is "New Activity", or "New <blueprint label>"
+activity. The default caption is "New Activity", or "New \<blueprint label\>"
 if the blueprint has a label setting.
 - **edit_caption**: Sets the caption of the dialog where the team edits an
-existing activity. The default is "Edit Activity" or "Edit <blueprint label>".
+existing activity. The default is "Edit Activity" or "Edit \<blueprint label\>".
 - **conclude_caption**: Sets the caption of the dialog where the activity is
-concluded. The default is "Conclude Activity" or "Conclude <blueprint label>".
+concluded. The default is "Conclude Activity" or "Conclude \<blueprint label\>".
 
 ````json
   "create_caption": "Report New Incident"
