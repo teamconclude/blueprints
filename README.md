@@ -112,8 +112,8 @@ how it is invoked.
 
 ##### Enter channel and use `/c new` 
 
-To use a *basic* or *standard* blueprint, the user must enter the channel where the
-blueprint is installed and type `/c new` to create an activity based on the blueprint.
+To use a *basic* or *standard* blueprint, the user must enter the spesific channel
+and type `/c new` to create an activity based on the blueprint.
 The blueprint is *invoked locally* from inside the channel. This can only be done by
 channel members.
 
