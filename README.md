@@ -2,13 +2,16 @@
 
 Blueprints let teams implement workflows directly in Slack, for example:
 
-- Responding to helpdesk inquires
-- Managing IT incidents
-- Processing recruitment candidates
+- Respond to helpdesk inquires
+- Manage incidents
+- Make team decisions
+- Process recruitment candidates
+- Handle customer escalations
+- And much more
 
 A blueprint specifies a workflow's information content, and how it is presented and
 shared. The goal of this document is to teach you how to create your own custom
-blueprints for <a href="https://concludeapp.com"> Conclude</a>.
+blueprints for <a href="https://concludeapp.com">Conclude</a>.
 
 Blueprints are expressed in JSON. You don't need to be a hard core developer to make
 your own blueprints. Start out with existing blueprints and experiment in your own
