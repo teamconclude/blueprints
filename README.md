@@ -1,15 +1,14 @@
 # Blueprints for Slack
 
-<a href="https://concludeapp.com"> Conclude's</a> blueprints let teams implement
-workflows and processes directly in Slack. Here are some workflows that Conclude
-supports out of the box:
+Blueprints let teams implement workflows directly in Slack, for example:
 
 - Responding to helpdesk inquires
 - Managing IT incidents
 - Processing recruitment candidates
 
 A blueprint specifies a workflow's information content, and how it is presented and
-shared. The goal of this document is to teach you how to create your own custom blueprints.
+shared. The goal of this document is to teach you how to create your own custom
+blueprints for <a href="https://concludeapp.com"> Conclude</a>.
 
 Blueprints are expressed in JSON. You don't need to be a hard core developer to make
 your own blueprints. Start out with existing blueprints and experiment in your own
