@@ -31,7 +31,7 @@ etc.) enter the channel and type the command:
   /c blueprint install incident
 ```
 
-Employees can now invoke this blueprint from Slack using the command:
+Employees can now invoke the *incident* blueprint from Slack using the command:
 ````
   /c incident
 ````
@@ -48,13 +48,15 @@ an activity is created. The purpose of the channel is to deal with an an activit
 concluded (closed), but the information is still available in the Conclude Inbox.
 - A **parent channel** is the Slack channel that an activity originates from.
 This is the channel where the blueprint is installed.
-- An **initiator** is the user who creates the activity.
+- The **initiator** is the user who creates the activity.
+- The **inside team** consists of the users who deal with the activity, consisting
+of an *owner* (who "owns" the activity) and other *members*.
 
 Here's an example:
 - A company has installed the *incident* blueprint in *#incidents*.
 - An employee or contractor (initiator) reports an incident with Conclude using `/c incident`.
-- Conclude will create an incident *activity* in the #_incidents-103 channel.
-- \#incidents is the parent channel and #_incidents-103 is the activity channel.
+- Conclude will create an incident *activity* in the #_incidents-1 (-2, -3, ...) channel.
+- \#incidents is the parent channel and #_incidents-1 is the activity channel.
 
 ## The Basic Blueprint
 
@@ -105,16 +107,25 @@ must be one of the following:
 The main difference between the types is scope; i.e. who can use the blueprint, and
 how it is invoked.
 
+### Basic and Standard Blueprints => Invoke from Channel
+
+##### Enter channel and use `/c new` 
+
 To use a *basic* or *standard* blueprint, the user must enter the channel where the
 blueprint is installed and type `/c new` to create an activity based on the blueprint.
 The blueprint is *invoked locally* from inside the channel. This can only be done by
 channel members.
 
+### Custom and Global Blueprints => Invoke from Anywhere
+
+##### Use `/c <blueprint>` from anywhere in Slack 
+
 *Custom* and *global* type can be invoked with the `/c <blueprint>` command from
 anywhere in Slack. The user does not need to enter the channel where the blueprint is
-installed (for example in `#helpdesk`) but can run the `/c helpdesk` from anywhere.
+installed (for example in `#helpdesk`) but can run the `/c helpdesk` from anywhere in
+Slack. It's also possible to run `/c new` in the blueprint's channel.
 
-### Custom Blueprints => Restricted Scope
+### Custom Blueprints - Restricted to Channel Members
 
 A *custom* blueprint is limited to users who are members of the channel where the
 blueprint was installed, while *global* has no such limitations and can even be used
@@ -123,30 +134,29 @@ by multi-channel guests, such as external contractors.
 You would normally use *custom* blueprints to implement workflows for functional or
 geographical units of the organization, and *global* blueprints for company-wide use.
 
-### Global Blueprints => Company-Wide Scope
+### Global Blueprints - for the Entire Workspace
 
-Global blueprints are useful, because they allow everyone in the workspace to create a
-new activity with these blueprints. However, they are not permitted to see the
-"inside" of the activity unless they get an explicit invitation.
+Global blueprints allow everyone in the workspace (except single channel members)
+to create a new activity. However, the initiator who creates the activity is
+not permitted to see the "inside" of the activity unless they get an explicit invitation.
 
-You can think of global blueprints as a way to build a *wall of separation* between the
-people on the outside who file a report, create a ticket etc. and the internal team on
-the inside that deals with the issue.
+With a global blueprint you can build a *wall of separation* between the initiator on
+the outside who files a report, creates a ticket etc., and the inside team that deals
+with the issue.
 
-To make global blueprints work, you need to specify who is on the inside team, and who
-should be notified about a new activity.
+When setting up a global blueprint you'll need to specify who is on the inside team,
+and who should be notified about a new activity. The `/c blueprint install` does this
+for you.
 
-This is exactly what the `/c blueprint install` command does.
+## Define the Inside Team: Owner, Members and Notifications
 
-## Default Owner, Members and Notifications
-
-A blueprint can specify the default owner and members (the internal team), and whom to notify
+A blueprint can specify the default owner and members, and whom to notify
 about the creation and conclusion of activities.
 
-#### Basic Blueprint: No Owner, Members of Notifications
+#### Basic Blueprint: No Owner, No Members, No Notifications
 
 The default behavior (when using the basic blueprint) is:
-- The user who created the activity with `/c new` becomes the owner.
+- The initiator who created the activity with `/c new` becomes the owner.
 - No members are invited by default.
 - No notifications are sent out, except that the owner sees a new activity channel.
 
