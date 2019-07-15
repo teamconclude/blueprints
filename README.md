@@ -20,20 +20,31 @@ in production. We recommend using an editor that understands JSON and warns abou
 syntax errors, for example <a href="https://visualstudio.microsoft.com">
 Visual Studio Code</a>.
 
+## Installing a Blueprint
+
+A blueprint is installed with the `/c blueprint install` command in Slack. Concludes comes
+with 3 prefabricated blueprints: helpdesk, incident and recruitment.
+
+For example, to install the *incident* blueprint in the #ict-incident channel,
+enter the channel and type the command:
+```
+  /c blueprint install incident
+```
+
 ## Key Concepts
 
 - A **blueprint** contains meta information for a workflow of a certain kind.
-- An **activity** is an instance of a blueprint, in the same way that a cookie
-is an instance of a cookie cutter. Or creating a helpdesk ticket (= activity) from
-the helpdesk blueprint.
+- An **activity** is an instance created from a blueprint, in the same way that a cookie
+is an instance created from a cookie cutter, or how a helpdesk ticket activity is an
+instance of a helpdesk blueprint.
 - An **activity channel** is a dedicated, ephemeral Slack channel created by Conclude when
 an activity is created. The purpose of the channel is to deal with an an activity
 (for example, a helpdesk ticket). The channel is archived when the activity is
-concluded (closed).
-- A **parent channel** is the Slack channel that an activity would come from, also called
-a **target channel** in the context of installing blueprints.
+concluded (closed), but the information is still available in the Conclude Inbox.
+- A **parent channel** is the Slack channel that an activity originates from.
+This is the channel where the blueprint is installed.
 
-Here's how this works in practice:
+Here's an example:
 - A company has installed the *incident* blueprint in *#ict-incidents*.
 - An employee or contractor reports an incident with Conclude using `/c incident`.
 - Conclude will create an incident *activity* in the #_ict-incidents-103 channel.
