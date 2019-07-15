@@ -95,7 +95,7 @@ channel members.
 anywhere in Slack. The user does not need to enter the channel where the blueprint is
 installed (for example in `#helpdesk`) but can run the `/c helpdesk` from anywhere.
 
-### Custom Blueprints = Restricted Scope
+### Custom Blueprints => Restricted Scope
 
 A *custom* blueprint is limited to users who are members of the channel where the
 blueprint was installed, while *global* has no such limitations and can even be used
@@ -104,13 +104,13 @@ by multi-channel guests, such as external contractors.
 You would normally use *custom* blueprints to implement workflows for functional or
 geographical units of the organization, and *global* blueprints for company-wide use.
 
-### Global Blueprints = Company-Wide Scope
+### Global Blueprints => Company-Wide Scope
 
 Global blueprints are useful, because they allow everyone in the workspace to create a
 new activity with these blueprints. However, they are not permitted to see the
 "inside" of the activity unless they get an explicit invitation.
 
-You can think of global blueprints as a way to build a wall of separation between the
+You can think of global blueprints as a way to build a *wall of separation* between the
 people on the outside who file a report, create a ticket etc. and the internal team on
 the inside that deals with the issue.
 
@@ -119,11 +119,14 @@ should be notified about a new activity.
 
 This is exactly what the `/c blueprint install` command does.
 
-## Internal Team and Notifications
+## Default Owner, Members and Notifications
 
 A blueprint can specify the default owner and members (the internal team), and whom to notify
-about the creation and conclusion of activities. The default behavior (when using the basic
-blueprint) is:
+about the creation and conclusion of activities.
+
+#### Basic Blueprint: No Owner, Members of Notifications
+
+The default behavior (when using the basic blueprint) is:
 - The user who created the activity with `/c new` becomes the owner.
 - No members are invited by default.
 - No notifications are sent out, except that the owner sees a new activity channel.
@@ -131,7 +134,9 @@ blueprint) is:
 The owner can invite members to the activity through Slack, or by using the
 `/c invite` command, a convenient way to invite several users or user groups to an activity.
 
-When someone installs a blueprint with the `/c blueprint install` command, Conclude will
+#### Default Settings with `/c blueprint install`
+
+When someone installs a blueprint with install command, Conclude will
 use these default settings (except when installing the basic blueprint):
 - The type is set to *global* so the blueprint becomes available to anyone in the workspace.
 - The person who installed the blueprint becomes the default owner of all activities
@@ -145,6 +150,8 @@ For example, @patricia install the *incident* blueprint in the #ict-incidents ch
 - All members of #ict-incidents will be invited to #_ict-incidents-1, ..-2 etc.
 - Notifications will be posted in #ict-incidents.
 
+#### JSON Representation
+
 You may modify these settings using `/c blueprint edit` to edit the JSON code, or
  by using some Conclude commands described below. The JSON code may look like this:
 ````json
@@ -153,20 +160,24 @@ You may modify these settings using `/c blueprint edit` to edit the JSON code, o
   "type": "global",
   "owner": "@patricia:U12Q150H2",
   "members": "#ict-incidents:CKRJ2EF59",
-  "notify": "#ict-incidents:CKRJ2EF59, @ict-team:S8RJ4GA21",
+  "notify": "#ict-incidents:CKRJ2EF59",
 ````
 
 The format is @slackuser:USER_ID or @slackusergroup:USERGROUP_ID, or #channel:CHANNEL_ID.
 Conclude only uses the ID after the colon. The user- or channel name before the colon is just
 for readability purposes.
 
+#### Use the `/c blueprint set ...` Commands
+
 We recommend that you never edit these settings directly in the JSON file but instead use
 these commands to set them:
 - `/c blueprint set owner @patricia`
 - `/c blueprint set members #ict-incidents` 
-- `/c blueprint set notify #incidents-log @ict-team` 
+- `/c blueprint set notify #iict-ncidents` 
 
 Conclude will look up the actual Slack IDs and insert them into the JSON.
+
+#### Owner Setting
 
 The **owner** must be a Slack team member that has permissions to create a new Slack channel.
 This user will become the owner of all activities creates with the blueprint. Conclude will
@@ -180,11 +191,19 @@ will become the initial owner (and initiator).
 You may change the owner later by using the `/c owner` command, or directly from the
 settings menu in the Conclude Inbox.
 
+#### Members Setting
+
 The **members** setting can include any combination of users, user groups and channels.
 Setting a channel as a member means inviting the current channel members to the activity.
 Think of the channel as a Slack user group, i.e. a list of people to be invited.
 
+There's no limit to how many individual users, channels or user groups you can invite:
+
+`/c blueprint set members #ict-incidents #escalations @amy @brendan @support-team`
+
 You may invite more members later, by using the `/c invite` command, or through Slack.
+
+#### Notify Setting
 
 The **notify** setting takes the same parameters as the members setting. It tells Conclude
 whom to notify when an activity has been created, concluded or re-opened.
@@ -201,20 +220,34 @@ Conclude can also show or clear settings:
 Don't remember the blueprint command later? No problem. Just type `/c help blueprint`
 to get a help text.
 
-## Attributes
+## Blueprint Attributes
 
 A blueprint can have up to 10 attributes, which is the maximum number of dialog elements
 supported by Slack.
 
-### Core Properties
+### Attribute Properties
 
-An attribute has a mandatory *name*, *label* and *type*, plus a few other properties
-described further down:
+An attribute has three mandatory properties and a number of optional properties.
+
+#### Mandatory Properties
+
 - **name**: The attribute internal name.
 - **type**: The attribute type, explained below.
 - **label**: A visible label displayed before the attribute.
 
-The attribute types can be one of the following:
+#### Optional Properties
+
+- **mandatory** (boolean): Setting *mandatory* to *true* means that the
+attribute should always have a non-empty value. This is the case for the *title* attribute.
+- **default_value**: The default value of an attribute.
+- **placeholder**: A text displayed inside the input field before the user starts typing.
+- **hint**: A contextual hint about the format etc. of the attribute.
+- **visible**: Controls where the attribute is displayed.
+
+#### Attribute Types
+
+The attribute type must be one of the following:
+
 - **string**: A single line text up to 150 characters.
 - **text**: A multi-line text area up to 3k characters.
 - **select**: A select dropdown with up to 100 choices.
@@ -242,7 +275,7 @@ A *select* attribute requires a list of options, like this:
       "label": ":white_check_mark: Completed"
     }
   ]
-  }
+}
 ````
 
 ### Predefined Attributes
@@ -257,18 +290,6 @@ their type must remain the same:
 
 Implicit attributes are not part of the blueprint even if they are not in the attribute list.
 They are also normally not displayed in the input dialog where a user creates a new activity.
-
-### More Attribute Properties
-
-There are a few other properties in addition to the obligatory *name*, *title* and
-*label* described above:
-
-- **mandatory** (boolean): Setting *mandatory* to *true* means that the
-attribute should always have a non-empty value. This is the case for the *title* attribute.
-- **default_value**: The default value of an attribute.
-- **placeholder**: A text displayed inside the input field before the user starts typing.
-- **hint**: A contextual hint about the format etc. of the attribute.
-- **visible**: Controls where the attribute is displayed (default = "").
 
 ### Attribute Visibility
 
@@ -296,12 +317,16 @@ the person who creates the activity:
 A blueprint offers a number of ways to customize the visual presentation and
 user experience of a workflow.
 
+#### Hiding Deadline and Severity
+
 The two *disable_...* settings take boolean values and should be set to 
 true or false (not "true" or "false"):
 - **disable_deadline**: Can be *true* or *false* (default). If *disable_deadline* is
 set Conclude will hide the deadline settings from the user interface.
 - **disable_severity**: Can be *true* or *false* (default). If *disable_severity* is
 set Conclude will hide the severity settings from the user interface.
+
+#### Changing Caption and Button Texts
 
 You can change the dialog caption (title) with these settings:
 - **create_caption**: Sets the caption of the dialog where the user creates a new
