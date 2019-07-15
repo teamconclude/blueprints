@@ -23,13 +23,18 @@ Visual Studio Code</a>.
 ## Installing a Blueprint
 
 A blueprint is installed with the `/c blueprint install` command in Slack. Concludes comes
-with 3 prefabricated blueprints: helpdesk, incident and recruitment.
+with 3 prefabricated blueprints: *helpdesk*, *incident* and *recruitment*.
 
-For example, to install the *incident* blueprint in the #ict-incident channel,
-enter the channel and type the command:
+For example, to install the *incident* blueprint in the #incidents channel (or #fires, #alerts,
+etc.) enter the channel and type the command:
 ```
   /c blueprint install incident
 ```
+
+Employees can now invoke this blueprint from Slack using the command:
+````
+  /c incident
+````
 
 ## Key Concepts
 
@@ -43,12 +48,13 @@ an activity is created. The purpose of the channel is to deal with an an activit
 concluded (closed), but the information is still available in the Conclude Inbox.
 - A **parent channel** is the Slack channel that an activity originates from.
 This is the channel where the blueprint is installed.
+- An **initiator** is the user who creates the activity.
 
 Here's an example:
-- A company has installed the *incident* blueprint in *#ict-incidents*.
-- An employee or contractor reports an incident with Conclude using `/c incident`.
-- Conclude will create an incident *activity* in the #_ict-incidents-103 channel.
-- \#ict-incidents is the parent channel and #_ict-incidents-103 is the activity channel.
+- A company has installed the *incident* blueprint in *#incidents*.
+- An employee or contractor (initiator) reports an incident with Conclude using `/c incident`.
+- Conclude will create an incident *activity* in the #_incidents-103 channel.
+- \#incidents is the parent channel and #_incidents-103 is the activity channel.
 
 ## The Basic Blueprint
 
@@ -158,10 +164,10 @@ created with this blueprint.
 invited to all activities. 
 - Notifications will be posted in the parent channel when an activity is created and concluded. 
 
-For example, @patricia install the *incident* blueprint in the #ict-incidents channel:
+For example, @patricia install the *incident* blueprint in the #incidents channel:
 - @patricia will become the default owner.
-- All members of #ict-incidents will be invited to #_ict-incidents-1, ..-2 etc.
-- Notifications will be posted in #ict-incidents.
+- All members of #incidents will be invited to #_incidents-1, ..-2 etc.
+- Notifications will be posted in #incidents.
 
 #### JSON Representation
 
@@ -172,8 +178,8 @@ You may modify these settings using `/c blueprint edit` to edit the JSON code, o
   "name": "incident",
   "type": "global",
   "owner": "@patricia:U12Q150H2",
-  "members": "#ict-incidents:CKRJ2EF59",
-  "notify": "#ict-incidents:CKRJ2EF59",
+  "members": "#incidents:CKRJ2EF59",
+  "notify": "#incidents:CKRJ2EF59",
 ````
 
 The format is @slackuser:USER_ID or @slackusergroup:USERGROUP_ID, or #channel:CHANNEL_ID.
@@ -185,7 +191,7 @@ for readability purposes.
 We recommend that you never edit these settings directly in the JSON file but instead use
 these commands to set them:
 - `/c blueprint set owner @patricia`
-- `/c blueprint set members #ict-incidents` 
+- `/c blueprint set members #incidents` 
 - `/c blueprint set notify #iict-ncidents` 
 
 Conclude will look up the actual Slack IDs and insert them into the JSON.
@@ -212,7 +218,7 @@ Think of the channel as a Slack user group, i.e. a list of people to be invited.
 
 There's no limit to how many individual users, channels or user groups you can invite:
 
-`/c blueprint set members #ict-incidents #escalations @amy @brendan @support-team`
+`/c blueprint set members #incidents #escalations @amy @brendan @support-team`
 
 You may invite more members later, by using the `/c invite` command, or through Slack.
 
