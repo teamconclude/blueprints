@@ -250,6 +250,21 @@ Conclude can also show or clear settings:
 Don't remember the blueprint command later? No problem. Just type `/c help blueprint`
 to get a help text.
 
+#### Other Settings
+
+The `/c blueprint` command may also be used to quickly set the blueprint's **type**, **name**
+and **label** without having to use `/c blueprint edit` and manually edit the JSON code.
+
+Here's how to install a helpdesk blueprint, change it's type to 'custom' and rename it:
+```
+  /c blueprint install helpdesk
+  /c blueprint set type custom
+  /c blueprint set name get-help
+```
+
+Like for the other settings, you may use `/c blueprint show ...` to display any of the values,
+or `/c blueprint clear label` to remove the label (the blueprint's type and name cannot be blank). 
+
 ## Blueprint Attributes
 
 A blueprint can have up to 10 attributes, which is the maximum number of dialog elements
