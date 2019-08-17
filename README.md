@@ -209,7 +209,6 @@ You can view and edit the JSON code using the `/c blueprint edit` command.
   "owner": "@patricia:U12Q150H2",
   "members": "#incidents:CKRJ2EF59",
   "notify": "#incidents:CKRJ2EF59",
-  ...
 ```
 
 The format is @slackuser:USER_ID or @slackusergroup:USERGROUP_ID, or #channel:CHANNEL_ID.
