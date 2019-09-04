@@ -18,12 +18,6 @@
       "placeholder": "More information here"
     },
     {
-      "name": "reportedBy",
-      "type": "user",
-      "label": "Reported by",
-      "placeholder": "Who reported the incident?"
-    },
-    {
       "name": "conclusion",
       "type": "text",
       "label": "Resolution",
@@ -36,7 +30,7 @@
       "options": [
         {
           "name": "none",
-          "label": "😌 None"
+          "label": "👌 None"
         },
         {
           "name": "low",
@@ -48,7 +42,7 @@
         },
         {
           "name": "high",
-          "label": "‼️ High"
+          "label": "❌️ High"
         },
         {
           "name": "critical",
@@ -62,7 +56,6 @@
       "name": "notes",
       "type": "text",
       "label": "Internal notes",
-      "placeholder": "Internal notes about response and remediation",
       "visible": "edit"
     }
   ],
