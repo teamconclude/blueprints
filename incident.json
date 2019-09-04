@@ -33,6 +33,10 @@
           "label": "👌 None"
         },
         {
+          "name": "unknown",
+          "label": "🤔 Unknown"
+        },
+        {
           "name": "low",
           "label": "⚠️ Low"
         },
