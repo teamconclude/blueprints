@@ -16,9 +16,8 @@ blueprints for <a href="https://concludeapp.com">Conclude</a>.
 Blueprints are expressed in JSON. You don't need to be a hard core developer to make
 your own blueprints. Start out with existing blueprints and experiment in your own
 Slack channels to understand how they work, then you'll soon be ready to set them
-in production. We recommend using an editor that understands JSON and warns about
-syntax errors, for example <a href="https://visualstudio.microsoft.com">
-Visual Studio Code</a>.
+in production. We recommend using the JSON editor in the Conclude app, under the
+settings -> Blueprint menu.
 
 ## Installing a Blueprint
 
@@ -150,12 +149,12 @@ When setting up a global blueprint you'll need to specify who is on the inside t
 and who should be notified about a new activity. The `/c blueprint install` does this
 for you.
 
-## Define the Inside Team: Owner, Members and Notifications
+## Who Should be Involved?
 
-A blueprint can specify the default owner and members, and whom to notify
+The blueprint can specify the default owner and members, and who should be alerted
 about the creation and conclusion of activities.
 
-#### Basic Blueprint: no owner, no members, no notifications
+#### Basic Blueprint: no owner, no members, no alerts
 
 The default behavior (when using the basic blueprint) is:
 - The initiator who created the activity with `/c new` becomes the owner.
@@ -208,7 +207,7 @@ You can view and edit the JSON code using the `/c blueprint edit` command.
   "type": "global",
   "owner": "@patricia:U12Q150H2",
   "members": "#incidents:CKRJ2EF59",
-  "notify": "#incidents:CKRJ2EF59",
+  "alert": "#incidents:CKRJ2EF59",
 ```
 
 The format is @slackuser:USER_ID or @slackusergroup:USERGROUP_ID, or #channel:CHANNEL_ID.
@@ -217,18 +216,18 @@ Conclude only uses the ID after the colon.
 **IMPORTANT:** You don't need to know the internal user IDs when editing the JSON.
 Just fill in the username or channel name, and Conclude will add the internal IDs.
 
-**TIP:** You can also set owner, members and notify dynamically in the blueprint's
-attribute section, using [select actions](#select-actions). This lets
-you invite different people or send notifications to different channels, depending
-user input.
+**TIP:** You can also change the owner, members and alert settings dynamically,
+based which dropdown option the user selects. For example, [select triggers](#select-triggers)
+can be used the send an alert to #management if the user submits an incident
+with severity set to critical.
 
 #### Use the `/c blueprint set ...` Commands
 
-Instead of editing the JSON, it's much easier to set the owner, members or notify
+Instead of editing the JSON, it's much easier to set the owner, members or alert
 setting by using these Conclude commands:
 - `/c blueprint set owner @patricia`
 - `/c blueprint set members #incidents`
-- `/c blueprint set notify #incidents`
+- `/c blueprint set alert #incidents`
 
 Conclude will look up the actual Slack IDs and insert them into the JSON so you don't have to.
 
@@ -258,22 +257,21 @@ There's no limit to how many individual users, channels or user groups you can i
 
 You may invite more members later, by using the `/c invite` command, or through Slack.
 
-#### Notify Setting
+#### Alert Setting
 
-The **notify** setting takes the same parameters as the members setting. It tells Conclude
-whom to notify when an activity has been created, concluded or re-opened.
+The **alert** setting takes the same parameters as the members setting. It tells Conclude
+whom to alert when an activity has been created, concluded or re-opened.
 
 **TIP**: Some teams prefer to send all notifications to a place:
-`/c blueprint set notify #conclude-logs`.   
+`/c blueprint set alert #conclude-logs`.   
 
 The only way to change the notification setting is to change it in the blueprint.
 
 Conclude can also show or clear settings:
 - `/c blueprint show members`
-- `/c blueprint clear notify`
+- `/c blueprint clear alert`
 
-Don't remember the blueprint command later? No problem. Just type `/c help blueprint`
-to get help.
+Don't remember the blueprint command later? Type `/c help blueprint` to get help.
 
 #### Other Settings
 
@@ -348,11 +346,11 @@ A *select* attribute requires a list of options, like this:
 }
 ```
 
-<a id="select-actions"></a>
-### Select Actions
+<a id="select-triggers"></a>
+### Select Triggers
 
-An option in a select attribute can be associated with a *select actions* to modify the
-*owner*, *members* and *notify* settings.
+An option in a select attribute can be associated with a *select trigger* to modify the
+*owner*, *members* and *alert* settings.
 
 ```json
 {
@@ -364,19 +362,19 @@ An option in a select attribute can be associated with a *select actions* to mod
     {
       "name": "uk",
       "label": ":flag-gb: London",
-      "action": {
+      "trigger": {
         "owner": "@tina",
         "members": "@emea-sre-team",
-        "notify": "#incidents-uk"
+        "alert": "#incidents-uk"
       }     
     },
     {
       "name": "us",
       "label": ":flag-us: Washington DC",
-      "action": {
+      "trigger": {
         "owner": "@dave",
         "members": "@us-sre-team",
-        "notify": "#incidents-us"
+        "alert": "#incidents-us"
       }     
     }
   ]
@@ -384,7 +382,7 @@ An option in a select attribute can be associated with a *select actions* to mod
 ```
 
 In this example the owner will be @tina or @dave, depending on the selected location.
-The members and notify action settings will be added to the blueprint's member and notify
+These members and alert settings will be appended to the blueprint's member and alert
 settings (not replace them).
 
 ### Predefined Attributes
