@@ -58,13 +58,15 @@ Here's an example:
 - Conclude will create an incident *activity* in the #\_incidents-1 (-2, -3, ...) channel.
 - \#incidents is the parent channel and #\_incidents-1 is the activity channel.
 
-## The Basic Blueprint
+## The Default Blueprint
 
-If you don't install a blueprint in a channel, it will have the *basic* blueprint
-set by default. It consists of three attributes:
-- A mandatory *title* that contains the subject of a basic activity.
-- An optional *body* field that contains a detailed text.
-- An optional *conclusion* field with the conclusion text.
+If you don't install a blueprint in a channel, it will have the default blueprint,
+called *basic*. This is a generic blueprint meant for basic activities.
+
+The basic blueprint consists of three attributes:
+- A mandatory **title** that contains a short subject text describing the activity.
+- An optional **body** field that contains a longer text for providing more detail.
+- An optional **conclusion** field with the conclusion text.
 
 ```json
 {
@@ -98,10 +100,11 @@ set by default. It consists of three attributes:
 ## Blueprint Name, Type and Scope
 
 A blueprint has a *name* and a *type*. The name can contain the same characters
-as a Slack channel; lower case letters, numbers, periods, and underscores. The type
-must be one of the following:
+as a Slack channel; lower case letters, numbers, periods, and underscores.
+
+The *type* must be one of the following:
 - **basic**: The basic blueprint.
-- **standard**: A built-in blueprint that has not been modified.
+- **standard**: A built-in blueprint without any modifications.
 - **custom**: A custom blueprint with restricted scope.
 - **global**: A custom blueprint with global scope.
 
@@ -149,7 +152,7 @@ When setting up a global blueprint you'll need to specify who is on the inside t
 and who should be notified about a new activity. The `/c blueprint install` does this
 for you.
 
-## Who Should be Involved?
+## Who Should be Involved in an Activity?
 
 The blueprint can specify the default owner and members, and who should be alerted
 about the creation and conclusion of activities.
@@ -214,22 +217,24 @@ The format is @slackuser:USER_ID or @slackusergroup:USERGROUP_ID, or #channel:CH
 Conclude only uses the ID after the colon.
 
 **IMPORTANT:** You don't need to know the internal user IDs when editing the JSON.
-Just fill in the username or channel name, and Conclude will add the internal IDs.
+Just fill in the username or channel name, and Conclude will add the internal IDs
+and always make sure they are correct. If Conclude cannot recognize the Slack name,
+the user ID will display "???".
 
-**TIP:** You can also change the owner, members and alert settings dynamically,
-based which dropdown option the user selects. For example, [select triggers](#select-triggers)
-can be used the send an alert to #management if the user submits an incident
-with severity set to critical.
+**TIP:** You can also change the owner, members and alert settings dynamically by using
+[select triggers](#select-triggers). For example, a trigger can be used to send an alert
+to #management if someone submits an incident with severity set to critical.
 
 #### Use the `/c blueprint set ...` Commands
 
-Instead of editing the JSON, it's much easier to set the owner, members or alert
-setting by using these Conclude commands:
+It's convenient and quick to set the owner, members and alert setting by using
+Conclude commands:
 - `/c blueprint set owner @patricia`
 - `/c blueprint set members #incidents`
 - `/c blueprint set alert #incidents`
 
-Conclude will look up the actual Slack IDs and insert them into the JSON so you don't have to.
+Conclude will insert this information into the blueprint code, so you don't need
+to worry about editing the JSON code.
 
 #### Owner Setting
 
@@ -285,7 +290,7 @@ Here's how to install a helpdesk blueprint, change it's type to 'custom' and ren
   /c blueprint set name get-help
 ```
 
-Like for the other settings, you may use `/c blueprint show ...` to display any of the values,
+As for the other settings, you may use `/c blueprint show ...` to display any of the values,
 or `/c blueprint clear label` to remove the label (the blueprint's type and name cannot be blank).
 
 ## Blueprint Attributes
