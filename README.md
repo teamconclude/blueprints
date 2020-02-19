@@ -278,6 +278,28 @@ Conclude can also show or clear settings:
 
 Don't remember the blueprint command later? Type `/c help blueprint` to get help.
 
+#### Notifications Setting
+
+The **notifications** setting controls notifications sent to the members
+of an activity when an attribute, such as the severity, has changed.
+
+You can silence most notifications by setting notifications to 'none'. Or you can
+tell Conclude to send out notifications when certain attributes change.  The
+default setting is 'deadline,severity,owner', meaning that Conclude will notify the
+activity members when the deadline, severity or owner has changed.
+
+Turn off all notifications:
+`/c blueprint set notifications none`
+
+Limit notifications to severity changes only:
+`/c blueprint set notifications severity`
+
+Get notifications when the deadline or the title changes:
+`/c blueprint set notifications deadline,title`
+
+Get notifications when any attribute changes:
+`/c blueprint set notifications attribute`
+
 #### Other Settings
 
 The `/c blueprint` command may also be used to quickly set the blueprint's **type**, **name**
